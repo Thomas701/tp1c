@@ -27,7 +27,7 @@ TEST(monom_save2file) {
 	monom_t v = {5., 7};
 
 	// creation du flux de texte => buffer
-	char buffer[1024];
+	char buffer[1024] = "";
 	FILE * file = fmemopen(buffer, 1024, "w");
 	REQUIRE ( NULL != file);
 
@@ -58,12 +58,13 @@ TEST(LL_create_cell) { // test de creation de cellule
 	REQUIRE ( NULL != new );
 	CHECK ( NULL == new->next );
 
-	char buffer[1024];
+	char buffer[1024] = "";
 	FILE * file = fmemopen(buffer, 1024, "w");
 	REQUIRE ( NULL != file);
 
 	monom_save2file(file, &(new->val));
 	fclose(file);
+	printf("buf = %s\n", buffer);
 	CHECK( 0 == strcmp(buffer, "3.245 17\n") ); 
 }
 
