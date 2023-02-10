@@ -58,7 +58,7 @@ void LL_create_list_fromFileName(cell_t ** head, char * name, int (*pf) (monom_t
  * @param [in] xxx head pointeur of a linked list
  * @param xxx fonction pointer for printing the data of a cell on an output stream
  */
-void LL_print_list(FILE * f, cell_t ** head, void (*pf) (cell_t *));
+void LL_print_list(FILE * f, cell_t ** head, void (*pf) (FILE *, monom_t *));
 
 /** TO DO
  * @brief Save a linked list into a file

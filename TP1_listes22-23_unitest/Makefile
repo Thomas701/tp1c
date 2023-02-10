@@ -63,4 +63,4 @@ clean:
 	rm -f $(OBJ_POLY)
 
 reclean:
-	rm -f $(OBJ_POLY) linkedList_main.o linkedList polynomial
+	rm -f $(OBJ_POLY) linkedList_main.o linkedList polynomial *.exe

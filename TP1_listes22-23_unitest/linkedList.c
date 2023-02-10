@@ -65,10 +65,8 @@ void LL_create_list_fromFileName(cell_t ** head, char * name, int (*pf) (monom_t
     cell_t * cellule = *head;
     double value;
     int degrees;
-
     f = fopen(name, "r");
     char *file_contents = malloc(sizeof(char)*63);
-
     while (fscanf(f, "%[^\n] ", file_contents) != EOF) 
     {
         monom_t * mon = (monom_t*) malloc(sizeof(monom_t));
@@ -96,9 +94,14 @@ void LL_create_list_fromFileName(cell_t ** head, char * name, int (*pf) (monom_t
  * @param [in] xxx head pointer of a linked list
  * @param xxx fonction pointer for printing the data of a cell on an output stream
  */
-void LL_print_list(FILE * f, cell_t ** head, void (*pf) (cell_t *))
+void LL_print_list(FILE * f, cell_t ** head, void (*pf) (FILE *, monom_t *))
 {
-    // TO DO
+  cell_t * cellule = *head;
+  while (cellule != NULL)
+    {
+      (*pf)(f ,cellule->val);
+      cellule = cellule->next;
+    }
 }
 
 /** TO DO
@@ -110,16 +113,8 @@ void LL_print_list(FILE * f, cell_t ** head, void (*pf) (cell_t *))
 void LL_save_list_toFileName(cell_t ** head, char * name, void (*pf)(FILE * ,monom_t *))
 {
     FILE * f;
-    f = fopen(name, "a");
-    cell_t * cellule = *head;
-    while (cellule != NULL)
-    {
-        printf("TEST\n");
-        (*pf)(f ,cellule->val);
-        printf("TEST2\n");
-        cellule = cellule->next;
-    }
-    return;
+    f = fopen(name, "w");
+    LL_print_list(f, head, pf);
 }
 
 

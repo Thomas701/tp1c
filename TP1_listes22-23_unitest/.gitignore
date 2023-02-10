@@ -1,0 +1,5 @@
+linkedList
+polynomial
+*.o
+fmemopen.tmp
+*.exe

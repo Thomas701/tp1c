@@ -26,8 +26,6 @@ int monom_degree_cmp(monom_t * mon1, monom_t * mon2)
  */
 void monom_save2file(FILE * f, monom_t * mon)
 {
-    printf("monom_save2 enclenché\n");
     fprintf(f, "%.3f %d\n", mon->coef, mon->degree);
-    printf("->%.3f %d\n", mon->coef, mon->degree);
     return;
 }
