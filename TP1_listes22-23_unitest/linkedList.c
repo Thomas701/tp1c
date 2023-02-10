@@ -38,14 +38,8 @@ cell_t * LL_create_cell(monom_t * mon)
  */
 void LL_add_cell(cell_t ** precedent, cell_t * cellule)
 {
-    if (*precedent == NULL)
-        *precedent = cellule;
-    else
-    {
-        cellule->next = (*precedent);
-        (*precedent) = cellule;
-    }
-    return;
+    cellule->next = (*precedent);
+    (*precedent) = cellule;
 }
 
 
@@ -123,21 +117,23 @@ void LL_save_list_toFileName(cell_t ** head, char * name, void (*pf)(FILE * ,mon
  * @param  xxx fonction pointer for comparison of two values
  * @return the address of the previous pointer
  */
-// LL_search_prev(cell_t ** head, cell_t * addr, int (*pf) (monom_t *, monom_t *))
-// {
-//     cell_t * courant = *head;
-//     cell_t * precedent = *head;
-//     while (courant != addr && courant != NULL)
-//     {
-//         if (courant != precedent)
-//             precedent = precedent->next;
-//         courant = courant->next;
-//     }
-//     if (courant == NULL)
-//     {
-//         printf("ERREUR")
-//     }
-// }
+LL_search_prev(cell_t ** head, cell_t * addr, int (*pf) (monom_t *, monom_t *))
+{
+    cell_t * courant = *head;
+    cell_t * precedent = *head;
+    while (courant != addr && courant != NULL)
+    {
+        if (courant != precedent)
+            precedent = precedent->next;
+        courant = courant->next;
+    }
+    if (courant == NULL)
+    {
+        printf("ERREUR: fonction: 'LL_search_prev', l'adresse donné en paramètre n'est pas présente dans la liste!");
+        EXIT_FAILURE;
+    }
+    
+}
 
 
 /** TO DO
