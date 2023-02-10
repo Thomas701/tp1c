@@ -25,7 +25,8 @@ void LL_init_list(cell_t ** adrHeadPt)
 cell_t * LL_create_cell(monom_t * mon)
 {
     cell_t * cellule = (cell_t *) malloc(sizeof(cell_t));
-    cellule->val = mon;
+    cellule->val.coef = mon->coef;
+    cellule->val.degree = mon->degree;
     cellule->next = NULL;
     return cellule;
 }
@@ -97,7 +98,7 @@ void LL_print_list(FILE * f, cell_t ** head, void (*pf) (FILE *, monom_t *))
   cell_t * cellule = *head;
   while (cellule != NULL)
     {
-      (*pf)(f ,cellule->val);
+      (*pf)(f, &(cellule->val));
       cellule = cellule->next;
     }
 }

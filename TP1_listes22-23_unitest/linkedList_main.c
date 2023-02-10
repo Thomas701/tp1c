@@ -82,8 +82,8 @@ TEST(LL_add_cell1) {
 	LL_add_cell(&list, new);
 	CHECK( list == new ); 
 
-	CHECK( list->val->coef == 3.45 );  // 3.45 est une valeur non approchee
-	CHECK( list->val->degree == 17 );
+	CHECK( list->val.coef == 3.45 );  // 3.45 est une valeur non approchee
+	CHECK( list->val.degree == 17 );
 	CHECK( list->next == NULL );
 
 	free(list); // liberer la cellule
