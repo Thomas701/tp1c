@@ -42,10 +42,8 @@ void LL_add_cell(cell_t ** precedent, cell_t * cellule)
         *precedent = cellule;
     else
     {
-        cell_t * cellSave;
-        cellSave = (*precedent)->next;
+        cellule->next = (*precedent)->next;
         (*precedent)->next = cellule;
-        cellule->next = cellSave;
     }
     return;
 }
