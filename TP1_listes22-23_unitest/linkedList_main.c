@@ -58,12 +58,13 @@ TEST(LL_create_cell) { // test de creation de cellule
 	REQUIRE ( NULL != new );
 	CHECK ( NULL == new->next );
 
-	char buffer[1024];
+	char buffer[1024] = "";
 	FILE * file = fmemopen(buffer, 1024, "w");
 	REQUIRE ( NULL != file);
 
 	monom_save2file(file, &(new->val));
 	fclose(file);
+	printf("buf = %s\n", buffer);
 	CHECK( 0 == strcmp(buffer, "3.245 17\n") ); 
 }
 
@@ -81,8 +82,8 @@ TEST(LL_add_cell1) {
 	LL_add_cell(&list, new);
 	CHECK( list == new ); 
 
-	CHECK( list->val->coef == 3.45 );  // 3.45 est une valeur non approchee
-	CHECK( list->val->degree == 17 );
+	CHECK( list->val.coef == 3.45 );  // 3.45 est une valeur non approchee
+	CHECK( list->val.degree == 17 );
 	CHECK( list->next == NULL );
 
 	free(list); // liberer la cellule

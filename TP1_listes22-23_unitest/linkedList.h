@@ -15,10 +15,10 @@
  *      - 'val' : value of a cell
  *      - 'next' : pointer to the next cell
  */
-typedef struct cell_t
+typedef struct cell
 {
-    monom_t * val;
-    struct cell_t * next;
+    monom_t val;
+    struct cell * next;
 } cell_t;
 
 
