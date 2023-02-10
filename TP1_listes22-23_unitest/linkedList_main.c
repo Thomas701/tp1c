@@ -11,7 +11,7 @@
 #include "teZZt.h"
 
 BEGIN_TEST_GROUP(linkedList)
-// oui
+
 TEST(monom_degree_cmp) {
 	monom_t v1 = {5.11, 7};
 	monom_t v2 = {3., 5};
@@ -27,7 +27,7 @@ TEST(monom_save2file) {
 	monom_t v = {5., 7};
 
 	// creation du flux de texte => buffer
-	char buffer[1024];
+	char buffer[1024] = "";
 	FILE * file = fmemopen(buffer, 1024, "w");
 	REQUIRE ( NULL != file);
 
@@ -68,12 +68,12 @@ TEST(LL_create_cell) { // test de creation de cellule
 }
 
 // test d'insertion de cellule - liste a une cellule
-TEST(LL_add_cell) { 
+TEST(LL_add_cell1) { 
 	cell_t *list = NULL;
 	cell_t *new = NULL;
-	monom_t m1 = {3.245, 17};
+	monom_t m1 = {3.45, 17};
 
-	printf("\nAdd a cell in a linked list : \n");
+	printf("\nAdd a cell to a linked list : \n");
 
 	new = LL_create_cell(&m1);
 	REQUIRE ( new != NULL );
@@ -81,36 +81,78 @@ TEST(LL_add_cell) {
 	LL_add_cell(&list, new);
 	CHECK( list == new ); 
 
-	char buffer[1024];
-	FILE * file = fmemopen(buffer, 1024, "w");
-	REQUIRE ( NULL != file);
+	CHECK( list->val->coef == 3.45 );  // 3.45 est une valeur non approchee
+	CHECK( list->val->degree == 17 );
+	CHECK( list->next == NULL );
 
-	LL_save_list_toFileName(list, file, monom_save2file);
-	fclose(file);
-	CHECK( 0 == strcmp(buffer, "3.245 17\n") ); 
-
-	free(new); // liberer la liste
+	free(list); // liberer la cellule
 	list = NULL;
 }
-/*
-// test d'insertion de cellule - liste a n cellules
-TEST(LL_add_celln) {
-	cell_t *list;
 
-	//TO DO
+// test d'insertion de cellule - liste a deux cellules
+TEST(LL_add_cell2) { 
+	cell_t *list = NULL;
+	cell_t *new = NULL;
+	monom_t m1 = {3.45, 17};
+	monom_t m2 = {25.8, 9};
+
+	printf("\nAdd two cells to a linked list : \n");
+
+	new = LL_create_cell(&m1);
+	REQUIRE ( new != NULL );
+	LL_add_cell(&list, new);
+	CHECK( list == new ); 
+
+	new = LL_create_cell(&m2);
+	REQUIRE ( new != NULL );
+	LL_add_cell(&list, new);
+	CHECK( list == new ); 
+
+	// tester les valeurs de la liste
+	// TO DO
+
+	// liberer la liste
+	// TO DO 
 }
 
+// test d'insertion de cellule - liste a trois cellules
+TEST(LL_add_cell3) { 
+	cell_t *list = NULL;
+	cell_t *new = NULL;
+	monom_t m1 = {3.245, 17};
+	monom_t m2 = {25.8, 9};
+	monom_t m3 = {12.4, 3};
+
+	printf("\nAdd three cells to a linked list : \n");
+
+	new = LL_create_cell(&m1);
+	REQUIRE ( new != NULL );
+	LL_add_cell(&list, new);
+	CHECK( list == new ); 
+
+	new = LL_create_cell(&m2);
+	REQUIRE ( new != NULL );
+	LL_add_cell(&list, new);
+	CHECK( list == new ); 
+
+	// ajouter le m3 en tete de la liste
+	// TO OD
+
+	// tester les valeurs de la liste
+	// TO DO
+
+	// liberer la liste
+	// TO DO 
+}
+
+/*
 // test pour la creation d'un polynome a partir d'un fichier - exemple
 TEST(LL_create_list_fromFileName0) {
 	cell_t *list;
 
 	printf("\nCreate a linked list from file name0: \n");
 
-	char buffer[1024];
-	FILE * file = fmemopen(buffer, 1024, "w");
-	REQUIRE ( NULL != file );
-
-	LL_create_list_fromFileName(&list, "notExist.txt", monom_degree_cmp);
+	LL_create_list_fromFileName(&list, "notExist.txt");
 	CHECK( NULL == list );
 
 }
@@ -122,13 +164,11 @@ TEST(LL_create_list_fromFileName) {
 	//TO DO
 }
 
-
-TEST(LL_print_list) { // test pour l'affichage d'un polynome sur un flux de sortie
+TEST(LL_save_list_toFile) { // test pour l'ecriture d'un polynome sur un flux de sortie
 	cell_t *list;
 
 	//TO DO
 }
-
 
 TEST(LL_search_prev) { // test pour la fonction de recherche d'une valeur
 	cell_t *list;
@@ -136,6 +176,13 @@ TEST(LL_search_prev) { // test pour la fonction de recherche d'une valeur
 	//TO DO
 }
 
+TEST(LL_add_celln) { // test d'insertion de cellule - liste a n cellules
+	cell_t *list = NULL;
+
+	// TO DO
+	// utiliser LL_save_list_toFile pour comparer la valeur de la liste
+	// et LL_free_list
+}
 
 TEST(LL_del_cell) { // test de la suppression d'un element
 	cell_t *list;
@@ -143,8 +190,13 @@ TEST(LL_del_cell) { // test de la suppression d'un element
 	//TO DO
 }
 
-
 TEST(LL_free_list) { // test de la liberation de liste
+	cell_t *list;
+
+	//TO DO
+}
+
+TEST(LL_save_list_toFileName) { // BONUS - 3eme Seance
 	cell_t *list;
 
 	//TO DO
@@ -157,4 +209,3 @@ int main(void) {
 	RUN_TEST_GROUP(linkedList);
 	return EXIT_SUCCESS;
 }
-
