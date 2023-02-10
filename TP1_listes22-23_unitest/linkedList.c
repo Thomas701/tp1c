@@ -42,10 +42,8 @@ void LL_add_cell(cell_t ** precedent, cell_t * cellule)
         *precedent = cellule;
     else
     {
-        cell_t * cellSave;
-        cellSave = (*precedent)->next;
-        (*precedent)->next = cellule;
-        cellule->next = cellSave;
+        cellule->next = (*precedent);
+        (*precedent) = cellule;
     }
     return;
 }
@@ -125,9 +123,20 @@ void LL_save_list_toFileName(cell_t ** head, char * name, void (*pf)(FILE * ,mon
  * @param  xxx fonction pointer for comparison of two values
  * @return the address of the previous pointer
  */
-// LL_search_prev()
+// LL_search_prev(cell_t ** head, cell_t * addr, int (*pf) (monom_t *, monom_t *))
 // {
-//     // TO DO
+//     cell_t * courant = *head;
+//     cell_t * precedent = *head;
+//     while (courant != addr && courant != NULL)
+//     {
+//         if (courant != precedent)
+//             precedent = precedent->next;
+//         courant = courant->next;
+//     }
+//     if (courant == NULL)
+//     {
+//         printf("ERREUR")
+//     }
 // }
 
 
