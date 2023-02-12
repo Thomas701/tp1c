@@ -75,7 +75,7 @@ void LL_save_list_toFileName(cell_t ** head, char * name, void (*pf)(FILE * ,mon
  * @param  xxx fonction pointer for comparison of two values
  * @return the address of the previous pointer
  */
- // LL_search_prev();
+cell_t ** LL_search_prev(cell_t ** head, monom_t * value, int (*pf) (monom_t *, monom_t *));
 
 /** TO DO
  * @brief Delete a cell from a linked list

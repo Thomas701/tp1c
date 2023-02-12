@@ -118,22 +118,14 @@ void LL_save_list_toFileName(cell_t ** head, char * name, void (*pf)(FILE * ,mon
  * @param  xxx fonction pointer for comparison of two values
  * @return the address of the previous pointer
  */
-LL_search_prev(cell_t ** head, cell_t * addr, int (*pf) (monom_t *, monom_t *))
+cell_t ** LL_search_prev(cell_t ** head, monom_t * value, int (*pf) (monom_t *, monom_t *))
 {
-    cell_t * courant = *head;
-    cell_t * precedent = *head;
-    while (courant != addr && courant != NULL)
+    cell_t ** cellule = head;
+    while (*cellule != NULL && (*pf) (value, &((*cellule)->val)) >=0 )
     {
-        if (courant != precedent)
-            precedent = precedent->next;
-        courant = courant->next;
+        cellule = &((*cellule)->next);
     }
-    if (courant == NULL)
-    {
-        printf("ERREUR: fonction: 'LL_search_prev', l'adresse donné en paramètre n'est pas présente dans la liste!");
-        EXIT_FAILURE;
-    }
-    
+    return cellule;
 }
 
 
@@ -141,10 +133,10 @@ LL_search_prev(cell_t ** head, cell_t * addr, int (*pf) (monom_t *, monom_t *))
  * @brief Delete a cell from a linked list
  * @param [in, out] xxx address of the previous pointer of the cell to delete
  */
-// LL_del_cell()
-// {
-//     // TO DO
-// }
+void LL_del_cell(cell_t ** precedent)
+{
+    
+}
 
 
 /** TO DO
