@@ -135,7 +135,9 @@ cell_t ** LL_search_prev(cell_t ** head, monom_t * value, int (*pf) (monom_t *, 
  */
 void LL_del_cell(cell_t ** precedent)
 {
-    
+    cell_t save = (*precedent)->next;
+    (*precedent)->next = (*precedent)->next->next;
+    free(save);
 }
 
 
