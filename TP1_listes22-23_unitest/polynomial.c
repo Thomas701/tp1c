@@ -32,10 +32,29 @@ void poly_derive(cell_t ** head)
  * @param xxx [in, out] address of the 1st polynomial's head pointer
  * @param xxx [in, out] address of the 2nd polynomial's head pointer
  */
-// poly_add()
-// {
-// 	// TO DO
-// }
+void poly_add(cell_t ** head1, cell_t ** head2)
+{
+	cell_t * cellule1 = (*head1);
+    cell_t * cellule2 = (*head2);
+    cell_t * cellule3;
+
+    LL_init_list(&cellule3);
+    while (cellule1 != NULL && cellule2 != NULL)
+    {
+        if (monom_degree_cmp(&(cellule1->val), &(cellule2->val)) == 0)
+        {
+            if (cellule1->val.coef + cellule2->val.coef != 0)
+            {
+                monom_t * mon = malloc(sizeof(mon));
+                mon->coef = cellule1->val.coef + cellule2->val.coef;
+                mon->degree = cellule1->val.degree;
+                cell_t * cell = LL_create_cell(mon);
+                LL_add_end_list(&cellule3, cell);
+            }
+        }
+    }
+    
+}
 
 /** TO DO
  * @brief compute P1 * P2

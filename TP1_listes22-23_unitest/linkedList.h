@@ -90,5 +90,8 @@ void LL_del_cell(cell_t ** precedent);
  */
 void LL_free_list(cell_t ** head);
 
+//Ajout de la fonction "ajouter_fin_de_liste, car plus simple pour la gestion de polynôme"
+void LL_add_end_list(cell_t ** head, cell_t * newCell);
+
 
 #endif

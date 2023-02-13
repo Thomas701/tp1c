@@ -128,7 +128,7 @@ void LL_save_list_toFileName(cell_t ** head, char * name, void (*pf)(FILE * ,mon
 cell_t ** LL_search_prev(cell_t ** head, monom_t * value, int (*pf) (monom_t *, monom_t *))
 {
     cell_t ** cellule = head;
-    while (*cellule != NULL && (*pf) (value, &((*cellule)->val)) > 0 )
+    while (*cellule != NULL && (*pf) (value, &((*cellule)->val)) != 0 )
     {
         cellule = &((*cellule)->next);
     }
@@ -158,13 +158,26 @@ void LL_del_cell(cell_t ** precedent)
  */
 void LL_free_list(cell_t ** head)
 {
-    cell_t * cellule = (*head);
-    cell_t * precedent = NULL;
-    while (cellule != NULL)
+    cell_t * suivant;
+    while ((suivant) != NULL)
     {
-        precedent = cellule;
-        cellule = cellule->next;
-        free(precedent);
-        printf("test\n");
+        suivant = (*head)->next;
+        free(*head);
+        (*head) = suivant;
+    }
+}
+
+//Ajout de la fonction "ajouter_fin_de_liste, car plus simple pour la gestion de polynôme"
+void LL_add_end_list(cell_t ** head, cell_t * newCell)
+{
+    cell_t * cellule = (*head);
+    if (cellule == NULL)
+        cellule = newCell;
+    else
+    {
+        while (cellule->next != NULL)
+            cellule = cellule->next;
+        
+        cellule->next = newCell;
     }
 }
