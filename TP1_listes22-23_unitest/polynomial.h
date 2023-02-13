@@ -1,13 +1,13 @@
 #ifndef __POLYNOMIAL_H__
 #define __POLYNOMIAL_H__
 
-// #include "linkedList.h"
+#include "linkedList.h"
 
 /** TO DO
  * @brief compute 'in place' the derive of a polynomial
  * @param [in, out] xxx address of a polynomial's head pointer
  */
-// poly_derive();
+void poly_derive(cell_t ** head);
 
 /** TO DO
  * @brief compute P1 = P1 + P2, P2 become empty
