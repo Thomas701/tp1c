@@ -137,27 +137,33 @@ TEST(LL_add_cell3) {
 	CHECK( list == new ); 
 
 	// ajouter le m3 en tete de la liste
-	// TO OD
+	new = LL_create_cell(&m3);
+	REQUIRE( new != NULL);
+	LL_add_cell(&list, new);
+	CHECK ( list == new );
 
 	// tester les valeurs de la liste
-	// TO DO
+	CHECK ( list->val.degree == m3.degree);
+	CHECK ( list->next->val.degree == m2.degree);
+	CHECK ( list->next->next->val.degree == m1.degree);
 
 	// liberer la liste
-	// TO DO 
+	LL_free_list(&list);
+	REQUIRE (NULL == list);
 }
 
-/*
+
 // test pour la creation d'un polynome a partir d'un fichier - exemple
 TEST(LL_create_list_fromFileName0) {
 	cell_t *list;
 
 	printf("\nCreate a linked list from file name0: \n");
 
-	LL_create_list_fromFileName(&list, "notExist.txt");
+	LL_create_list_fromFileName(&list, "notExist.txt", &monom_degree_cmp);
 	CHECK( NULL == list );
 
 }
-
+/*
 // test pour la creation d'un polynome a partir d'un fichier
 TEST(LL_create_list_fromFileName) {
 	cell_t *list;

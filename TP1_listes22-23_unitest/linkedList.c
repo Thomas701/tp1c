@@ -53,15 +53,21 @@ void LL_add_cell(cell_t ** precedent, cell_t * cellule)
  */
 void LL_create_list_fromFileName(cell_t ** head, char * name, int (*pf) (monom_t *, monom_t *))
 {
-    LL_init_list(head);
+    //#Declaration
+    LL_init_list(head); // met *head à NULL
     FILE * f;
     cell_t * cellule = *head;
     double value;
     int degrees;
+    //#Initialisation
     f = fopen(name, "r");
-    char *file_contents = malloc(sizeof(char)*63);
+    char *file_contents = malloc(sizeof(char)*60);
+    //#code
+    if (f == NULL) //si le fichier n'existe pas, on ne fait rien
+        return;
     while (fscanf(f, "%[^\n] ", file_contents) != EOF) 
     {
+        printf("JE RENTRE DANS LA BOUCLE\n");
         monom_t * mon = (monom_t*) malloc(sizeof(monom_t));
         sscanf(file_contents,"%lf %d\n",&value, &degrees);
         mon->coef = value;
@@ -75,7 +81,7 @@ void LL_create_list_fromFileName(cell_t ** head, char * name, int (*pf) (monom_t
         {
             cell_t * cellule2 = LL_create_cell(mon);
             cellule->next = cellule2;
-            cellule = cellule->next;
+            cellule = cellule2;
         }
     }
     return;
@@ -108,6 +114,7 @@ void LL_save_list_toFileName(cell_t ** head, char * name, void (*pf)(FILE * ,mon
     FILE * f;
     f = fopen(name, "w");
     LL_print_list(f, head, pf);
+    fclose(f);
 }
 
 
@@ -135,7 +142,7 @@ cell_t ** LL_search_prev(cell_t ** head, monom_t * value, int (*pf) (monom_t *, 
  */
 void LL_del_cell(cell_t ** precedent)
 {
-    cell_t save = (*precedent)->next;
+    cell_t * save = (*precedent)->next;
     (*precedent)->next = (*precedent)->next->next;
     free(save);
 }
@@ -145,7 +152,15 @@ void LL_del_cell(cell_t ** precedent)
  * @brief Free the memory location occupied by a linked list
  * @param [in, out] xxx address of head pointer of a linked list
  */
-// LL_free_list()
-// {
-//     // TO DO
-// }
+void LL_free_list(cell_t ** head)
+{
+    cell_t * cellule = (*head);
+    cell_t * precedent = NULL;
+    while (cellule != NULL)
+    {
+        precedent = cellule;
+        cellule = cellule->next;
+        free(precedent);
+        printf("test\n");
+    }
+}

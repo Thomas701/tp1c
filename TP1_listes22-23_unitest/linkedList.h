@@ -88,7 +88,7 @@ void LL_del_cell(cell_t ** precedent);
  * @brief Free the memory location occupied by the cells of a linked list
  * @param [in, out] xxx address of head pointer of a linked list
  */
- // LL_free_list();
+void LL_free_list(cell_t ** head);
 
 
 #endif
