@@ -163,14 +163,24 @@ TEST(LL_create_list_fromFileName0) {
 	CHECK( NULL == list );
 
 }
-/*
+
 // test pour la creation d'un polynome a partir d'un fichier
 TEST(LL_create_list_fromFileName) {
 	cell_t *list;
+	LL_create_list_fromFileName(&list, "test.txt", &monom_degree_cmp);
+	REQUIRE (NULL != list);
+	CHECK( list->val.coef == 5.413);
+	printf("%.3f, %d\n", list->val.coef, list->val.degree);
+	printf("%.3f, %d\n", list->next->val.coef, list->next->val.degree);
+	printf("%.3f, %d\n", list->next->next->val.coef, list->next->next->val.degree);
+	CHECK( list->val.degree == 2);
+	CHECK( list->next->val.coef == 6.012);
+	CHECK( list->next->val.degree == 3);
+	CHECK( list->next->next->val.coef == 8.500);
+	CHECK( list->next->next->val.degree == 8);
 
-	//TO DO
 }
-
+/*
 TEST(LL_save_list_toFile) { // test pour l'ecriture d'un polynome sur un flux de sortie
 	cell_t *list;
 

@@ -35,25 +35,43 @@ void poly_derive(cell_t ** head)
 void poly_add(cell_t ** head1, cell_t ** head2)
 {
 	cell_t * cellule1 = (*head1);
-    cell_t * cellule2 = (*head2);
-    cell_t * cellule3;
+    cell_t * courant1 = (*head1);
+    cell_t * courant2 = (*head2);
+    int test = 1;
 
-    LL_init_list(&cellule3);
-    while (cellule1 != NULL && cellule2 != NULL)
-    {
-        if (monom_degree_cmp(&(cellule1->val), &(cellule2->val)) == 0)
-        {
-            if (cellule1->val.coef + cellule2->val.coef != 0)
-            {
-                monom_t * mon = malloc(sizeof(mon));
-                mon->coef = cellule1->val.coef + cellule2->val.coef;
-                mon->degree = cellule1->val.degree;
-                cell_t * cell = LL_create_cell(mon);
-                LL_add_end_list(&cellule3, cell);
-            }
+    while (courant1 != NULL || courant2 != NULL) {
+        monom_t * mon = malloc(sizeof(mon));
+        if (courant1 == NULL || (monom_degree_cmp(&(courant1->val), &(courant2->val)) > 0)) {
+            mon->coef = courant2->val.coef;
+            mon->degree = courant2->val.degree;
+            cell_t * newCell = LL_create_cell(mon);
+            LL_add_cell(&cellule1, newCell);
+            courant2 = courant2->next;
         }
+        else if (courant2 == NULL || (monom_degree_cmp(&(courant1->val), &(courant2->val)) < 0)) {
+            mon->coef = courant1->val.coef;
+            mon->degree = courant1->val.degree;
+            cell_t * newCell = LL_create_cell(mon);
+            LL_add_cell(&cellule1, newCell);
+            courant1 = courant1->next;
+        }
+        else if ((monom_degree_cmp(&(courant1->val), &(courant2->val)) == 0) 
+            && (courant1->val.coef + courant2->val.coef != 0)) {
+            mon->coef = courant1->val.coef + courant2->val.coef;
+            mon->degree = courant1->val.degree;
+            cell_t * newCell = LL_create_cell(mon);
+            LL_add_cell(&cellule1, newCell);
+            courant1 = courant1->next;
+            courant2 = courant2->next;
+        }
+        if (test)
+        {
+            (*head1) = cellule1;
+            test = 0;
+        }
+        cellule1 = cellule1->next;
     }
-    
+    LL_free_list(&cellule1);
 }
 
 /** TO DO

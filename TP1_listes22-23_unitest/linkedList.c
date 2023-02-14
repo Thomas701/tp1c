@@ -56,7 +56,7 @@ void LL_create_list_fromFileName(cell_t ** head, char * name, int (*pf) (monom_t
     //#Declaration
     LL_init_list(head); // met *head à NULL
     FILE * f;
-    cell_t * cellule = *head;
+    cell_t * cellule;;
     double value;
     int degrees;
     //#Initialisation
@@ -67,15 +67,14 @@ void LL_create_list_fromFileName(cell_t ** head, char * name, int (*pf) (monom_t
         return;
     while (fscanf(f, "%[^\n] ", file_contents) != EOF) 
     {
-        printf("JE RENTRE DANS LA BOUCLE\n");
         monom_t * mon = (monom_t*) malloc(sizeof(monom_t));
-        sscanf(file_contents,"%lf %d\n",&value, &degrees);
-        mon->coef = value;
+        sscanf(file_contents,"%lf %d",&value, &degrees);
+        mon->coef = value; //printf("monCoef: %.3f, monDegree: %d\n", value, degrees);
         mon->degree = degrees;
-        if (cellule == NULL)
+        if ((*head) == NULL)
         {
-            cell_t * cellule2 = LL_create_cell(mon);
-            *cellule = *cellule2;
+            cellule = LL_create_cell(mon);
+            (*head) = cellule;
         }
         else
         {
