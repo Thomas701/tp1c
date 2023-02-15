@@ -14,7 +14,7 @@ void poly_derive(cell_t ** head);
  * @param xxx [in, out] address of the 1st polynomial's head pointer
  * @param xxx [in, out] address of the 2nd polynomial's head pointer
  */
-// poly_add();
+void poly_add(cell_t ** head1, cell_t ** head2);
 
 /** TO DO
  * @brief P1 * P2
@@ -22,6 +22,6 @@ void poly_derive(cell_t ** head);
  * @param xxx [in, out] head pointer of the 2nd polynomial
  * @return P1*P2
  */
-// poly_prod();
+cell_t ** poly_prod(cell_t * head1, cell_t * head2);
 
 #endif

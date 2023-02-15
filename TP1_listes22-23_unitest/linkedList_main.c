@@ -170,9 +170,6 @@ TEST(LL_create_list_fromFileName) {
 	LL_create_list_fromFileName(&list, "test.txt", &monom_degree_cmp);
 	REQUIRE (NULL != list);
 	CHECK( list->val.coef == 5.413);
-	printf("%.3f, %d\n", list->val.coef, list->val.degree);
-	printf("%.3f, %d\n", list->next->val.coef, list->next->val.degree);
-	printf("%.3f, %d\n", list->next->next->val.coef, list->next->next->val.degree);
 	CHECK( list->val.degree == 2);
 	CHECK( list->next->val.coef == 6.012);
 	CHECK( list->next->val.degree == 3);
