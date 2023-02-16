@@ -81,7 +81,7 @@ void poly_add(cell_t ** head1, cell_t ** head2)
  * @param xxx [in, out] head pointer of the 2nd polynomial
  * @return P1*P2
  */
-cell_t ** poly_prod(cell_t * head1, cell_t * head2)
+cell_t * poly_prod(cell_t * head1, cell_t * head2)
 {
     cell_t * head3;
     monom_t mon;
@@ -94,7 +94,7 @@ cell_t ** poly_prod(cell_t * head1, cell_t * head2)
             mon.coef = (head1->val.coef) * (head2->val.coef);
             mon.degree = (head1->val.degree) + (head2->val.degree);
             cell_t * newCell = LL_create_cell(&mon);
-            cell_t ** find = LL_search_prev(&head3, newCell, &monom_degree_cmp);
+            cell_t ** find = LL_search_prev(&head3, &(newCell->val), &monom_degree_cmp);
             if (find == NULL || (*find) == NULL || (*find)->val.degree != newCell->val.degree)
                 LL_add_cell(find, newCell);
             else 
@@ -104,5 +104,5 @@ cell_t ** poly_prod(cell_t * head1, cell_t * head2)
         }
         head1 = head1->next;
     }
-    return &head3;
+    return head3;
 }

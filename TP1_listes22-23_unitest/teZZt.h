@@ -64,7 +64,7 @@ void __tezzt__failed_test();
   atexit(__tezzt__exit_program_with_report);             \
 
 /* -------------------------------------------------------------------------------END_TEST_GROUP */
-#define END_TEST_GROUP(NO_USE)                                        \                     
+#define END_TEST_GROUP(NO_USE)                                       \                     
   unsigned i      = 0;                                               \
                                                                      \
   while (i<__group_counter__) {                                      \
