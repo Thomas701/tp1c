@@ -10,7 +10,6 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-#include "fm.h"
 //#include<math.h>
 
 // DO NOT COMPILE with -ansi -pedantic options
@@ -60,11 +59,11 @@ void __tezzt__failed_test();
   static const char * __group_name__ = #NAME;   \
   static unsigned passed_tests = 0;             \
   static unsigned failed_tests = 0;             \
-  __group_counter__=0;                            \
+  __group_counter__=0;                          \
   atexit(__tezzt__exit_program_with_report);             \
 
 /* -------------------------------------------------------------------------------END_TEST_GROUP */
-#define END_TEST_GROUP(NO_USE)                                       \                     
+#define END_TEST_GROUP(NO_USE)                                        \
   unsigned i      = 0;                                               \
                                                                      \
   while (i<__group_counter__) {                                      \

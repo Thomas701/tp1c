@@ -85,7 +85,7 @@ cell_t * poly_prod(cell_t * head1, cell_t * head2)
 {
     cell_t * head3;
     monom_t mon;
-
+    
     LL_init_list(&head3);
     while (head1 != NULL)
     {

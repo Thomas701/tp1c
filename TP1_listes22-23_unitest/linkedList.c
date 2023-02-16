@@ -127,6 +127,7 @@ void LL_save_list_toFileName(cell_t ** head, char * name, void (*pf)(FILE * ,mon
 cell_t ** LL_search_prev(cell_t ** head, monom_t * value, int (*pf) (monom_t *, monom_t *))
 {
     cell_t ** cellule = head;
+    //#
     while (*cellule != NULL && (*pf) (value, &((*cellule)->val)) >= 0 )
     {
         cellule = &((*cellule)->next);
