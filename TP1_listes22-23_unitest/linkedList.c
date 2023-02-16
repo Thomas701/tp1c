@@ -166,18 +166,3 @@ void LL_free_list(cell_t ** head)
         (*head) = suivant;
     }
 }
-
-//Ajout de la fonction "ajouter_fin_de_liste, car plus simple pour la gestion de polynôme"
-void LL_add_end_list(cell_t ** head, cell_t * newCell)
-{
-    cell_t * cellule = (*head);
-    if (cellule == NULL)
-        cellule = newCell;
-    else
-    {
-        while (cellule->next != NULL)
-            cellule = cellule->next;
-        
-        cellule->next = newCell;
-    }
-}
