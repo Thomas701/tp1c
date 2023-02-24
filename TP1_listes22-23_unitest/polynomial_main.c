@@ -22,27 +22,27 @@ TEST(LL_init_list) {
 	REQUIRE ( list == NULL );
 }
 
-/*
-TEST(Poly_derive1) {  // exemple
+
+TEST(Poly_derive1) {  
 	cell_t *poly = NULL;
 	FILE   *file = NULL;
-	char   buffer[1024];
+	char   buffer[1024] = "";
 
 	printf("\nDerive of polynomial 1 : \n");
 
 	file = fmemopen(buffer, 1024, "w");
 	REQUIRE ( NULL != file );
-	LL_create_list_fromFileName(&poly, "poly1.txt", monom_degree_cmp);
-	LL_save_list_toFile(file, poly, monom_save2file);
+	LL_create_list_fromFileName(&poly, "poly1.txt");
+	LL_print_list(file, &poly, monom_save2file);
 	fclose(file);
-	// LL_save_list_toFile(stdout, poly, monom_save2file);
+	// LL_print_list(stdout, &poly, monom_save2file);
 	// printf("\n");
 	CHECK( 0 == strcmp(buffer, "5.000 1\n4.000 2\n5.000 3\n6.000 4\n3.000 5\n") );
 
 	file = fmemopen(buffer, 1024, "w");
 	REQUIRE ( NULL != file );
 	poly_derive(&poly);
-	LL_save_list_toFile(file, poly, monom_save2file);
+	LL_print_list(file, &poly, monom_save2file);
 	fclose(file);
 	// LL_save_list_toFile(stdout, poly, monom_save2file);
 	// printf("\n");
@@ -52,10 +52,29 @@ TEST(Poly_derive1) {  // exemple
 
 TEST(Poly_derive) { // test sur la derivation d'un polynome
 	cell_t *list;
+	monom_t v1 = {5.11, 0};
+	char   buffer[1024] = "";
+	FILE* file;
+	
+	LL_init_list(&list);
 
-	//TO DO
+	file = fmemopen(buffer, 1024, "w");
+	REQUIRE ( NULL != file );
+	list = LL_create_cell(&v1);
+	LL_print_list(file, &list, monom_save2file);
+	fclose(file);
+	CHECK( 0 == strcmp(buffer, "5.110 0\n") );
+
+	
+	
+	poly_derive(&list);
+	LL_print_list(stdout, &list, monom_save2file);
+	CHECK (list == NULL);
+	
+	
+	LL_free_list(&list);
 }
-
+/*
 
 TEST(Poly_addition) { // test sur l'addition de deux polymones
 	cell_t *list;

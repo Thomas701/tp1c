@@ -148,11 +148,12 @@ TEST(LL_add_cell3) {
         REQUIRE( new != NULL);
         LL_add_cell(&list, new);
         CHECK ( list == new );
-
+	
         // tester les valeurs de la liste
         CHECK ( list->val.degree == m3.degree);
         CHECK ( list->next->val.degree == m2.degree);
         CHECK ( list->next->next->val.degree == m1.degree);
+	CHECK ( list->next->next->next == NULL);
 
         // liberer la liste
         LL_free_list(&list);
@@ -193,13 +194,18 @@ TEST(LL_save_list_toFile) { // test pour l'ecriture d'un polynome sur un flux de
 
 	//TO DO
 }
-
+*/
 TEST(LL_search_prev) { // test pour la fonction de recherche d'une valeur
+
 	cell_t *list;
-
-	//TO DO
+        LL_create_list_fromFileName(&list, "test.txt");
+        REQUIRE (NULL != list);
+	cell_t ** cel = LL_search_prev(&list, (&list->next->next->val), &monom_degree_cmp);
+	REQUIRE(*cel != NULL);
+	LL_free_list(&list);
+	
 }
-
+/*
 TEST(LL_add_celln) { // test d'insertion de cellule - liste a n cellules
 	cell_t *list = NULL;
 

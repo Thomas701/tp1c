@@ -11,7 +11,7 @@
  */
 void poly_derive(cell_t ** head)
 {
-	cell_t * cellule = (*head);
+  cell_t * cellule = (*head);
     while (cellule != NULL)
     {
         if (cellule->val.degree == 0)
@@ -24,6 +24,7 @@ void poly_derive(cell_t ** head)
             cellule->val.coef = (cellule->val.coef) * (cellule->val.degree);
             cellule->val.degree = (cellule->val.degree) - 1;
         }
+	cellule = cellule->next;
     }
 }
 

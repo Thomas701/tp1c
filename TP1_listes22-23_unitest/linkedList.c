@@ -131,7 +131,11 @@ cell_t ** LL_search_prev(cell_t ** head, monom_t * value, int (*pf) (monom_t *, 
     cell_t ** cellule = head;
     while (*cellule != NULL && (*pf) (value, &((*cellule)->val)) >= 0 )
     {
+      printf("dedans\n");
         cellule = &((*cellule)->next);
+    }
+    if(*cellule == NULL){
+      printf("c de la merde\n");
     }
     return cellule;
 }
