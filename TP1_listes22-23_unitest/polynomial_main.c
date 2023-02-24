@@ -33,20 +33,20 @@ TEST(Poly_derive1) {  // exemple
 	file = fmemopen(buffer, 1024, "w");
 	REQUIRE ( NULL != file );
 	LL_create_list_fromFileName(&poly, "poly1.txt", monom_degree_cmp);
-	LL_print_list(file, poly, monom_print);
+	LL_save_list_toFile(file, poly, monom_save2file);
 	fclose(file);
-	// LL_print_list(stdout, poly, monom_print);
+	// LL_save_list_toFile(stdout, poly, monom_save2file);
 	// printf("\n");
-	CHECK( 0 == strcmp(buffer, "(5.00, 1) (4.00, 2) (5.00, 3) (6.00, 4) (3.00, 5) ") );
+	CHECK( 0 == strcmp(buffer, "5.000 1\n4.000 2\n5.000 3\n6.000 4\n3.000 5\n") );
 
 	file = fmemopen(buffer, 1024, "w");
 	REQUIRE ( NULL != file );
 	poly_derive(&poly);
-	LL_print_list(file, poly, monom_print);
+	LL_save_list_toFile(file, poly, monom_save2file);
 	fclose(file);
-	// LL_print_list(stdout, poly, monom_print);
+	// LL_save_list_toFile(stdout, poly, monom_save2file);
 	// printf("\n");
-	CHECK( 0 == strcmp(buffer, "(5.00, 0) (8.00, 1) (15.00, 2) (24.00, 3) (15.00, 4) ") );
+	CHECK( 0 == strcmp(buffer, "5.000 0\n8.000 1\n15.000 2\n24.000 3\n15.000 4\n") );
 	LL_free_list(&poly);
 }
 
