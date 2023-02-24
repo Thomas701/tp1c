@@ -196,12 +196,24 @@ TEST(LL_save_list_toFile) { // test pour l'ecriture d'un polynome sur un flux de
 }
 */
 TEST(LL_search_prev) { // test pour la fonction de recherche d'une valeur
-
 	cell_t *list;
+	cell_t ** cel;
+	  
         LL_create_list_fromFileName(&list, "test.txt");
         REQUIRE (NULL != list);
-	cell_t ** cel = LL_search_prev(&list, (&list->next->next->val), &monom_degree_cmp);
+	LL_print_list(stdout, &list, &monom_save2file);
+	cel = LL_search_prev(&list, (&list->next->next->val), &monom_degree_cmp);
 	REQUIRE(*cel != NULL);
+	CHECK(*cel == list->next->next);
+
+	monom_t tmp = {4, 100};
+	cel = LL_search_prev(&list, (&tmp), &monom_degree_cmp);
+	REQUIRE(*cel == NULL);
+
+	cel = LL_search_prev(&list, (&list->val), &monom_degree_cmp);
+	REQUIRE(*cel != NULL);
+	CHECK(*cel == list);
+	
 	LL_free_list(&list);
 	
 }

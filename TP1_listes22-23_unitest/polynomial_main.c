@@ -74,22 +74,75 @@ TEST(Poly_derive) { // test sur la derivation d'un polynome
 	
 	LL_free_list(&list);
 }
-/*
+
 
 TEST(Poly_addition) { // test sur l'addition de deux polymones
-	cell_t *list;
+	cell_t *poly;
+	cell_t *poly2;
 
-	//TO DO
+	LL_create_list_fromFileName(&poly, "test.txt");
+	LL_create_list_fromFileName(&poly2, "test.txt");
+
+	REQUIRE(poly != NULL && poly2 != NULL);
+	// LL_print_list(stdout, &poly, &monom_save2file);
+	poly_add(&poly, &poly2);
+	REQUIRE(poly != NULL);
+
+	char buffer[1024] = "";
+        FILE * file = fmemopen(buffer, 1024, "w");
+        REQUIRE ( NULL != file);
+
+        LL_print_list(file, &poly, &monom_save2file);
+        fclose(file);
+	// printf("%s\n", buffer);
+        CHECK(0 == strcmp(buffer, "10.826 2\n12.024 3\n17.000 8\n"));
+
+	LL_create_list_fromFileName(&poly2, "test2.txt");
+	LL_print_list(stdout, &poly2, &monom_save2file);
+	poly_add(&poly, &poly2);
+	REQUIRE(poly != NULL);
+
+
+        file = fmemopen(buffer, 1024, "w");
+        REQUIRE ( NULL != file);
+
+        LL_print_list(file, &poly, &monom_save2file);
+        fclose(file);
+	printf("%s\n", buffer);
+        CHECK(0 == strcmp(buffer, "10.826 2\n12.024 3\n17.000 8\n"));
+	
+	LL_free_list(&poly);
+	
 }
 
 
 TEST(Poly_produit) { // test sur le calcul du produit de deux polymones
-	cell_t *list;
+	cell_t *poly;
+	cell_t *poly2;
+	cell_t *poly3;
 
-	//TO DO
+	LL_create_list_fromFileName(&poly, "test.txt");
+	LL_create_list_fromFileName(&poly2, "test.txt");
+
+	REQUIRE(poly != NULL && poly2 != NULL);
+	// LL_print_list(stdout, &poly, &monom_save2file);
+	poly3 = poly_prod(poly, poly2);
+	REQUIRE(poly != NULL);
+
+	char buffer[1024] = "";
+        FILE * file = fmemopen(buffer, 1024, "w");
+        REQUIRE ( NULL != file);
+
+        LL_print_list(file, &poly3, &monom_save2file);
+        fclose(file);
+	// printf("%s\n", buffer);
+        CHECK(0 == strcmp(buffer, "29.301 4\n65.086 5\n36.144 6\n92.021 10\n102.204 11\n72.250 16\n"));
+
+	
+	LL_free_list(&poly);
 }
 
-
+/*
 TEST(LL_save_list_toFileName) { // test pour l'ecriture d'un polynome dans un fichier
 	cell_t *list;
 

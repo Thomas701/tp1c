@@ -129,13 +129,9 @@ void LL_save_list_toFileName(cell_t ** head, char * name, void (*pf)(FILE * ,mon
 cell_t ** LL_search_prev(cell_t ** head, monom_t * value, int (*pf) (monom_t *, monom_t *))
 {
     cell_t ** cellule = head;
-    while (*cellule != NULL && (*pf) (value, &((*cellule)->val)) >= 0 )
+    while (*cellule != NULL && (*pf) (value, &((*cellule)->val)) > 0 )
     {
-      printf("dedans\n");
         cellule = &((*cellule)->next);
-    }
-    if(*cellule == NULL){
-      printf("c de la merde\n");
     }
     return cellule;
 }
@@ -148,7 +144,6 @@ cell_t ** LL_search_prev(cell_t ** head, monom_t * value, int (*pf) (monom_t *, 
 void LL_del_cell(cell_t ** precedent)
 {
     cell_t * save = (*precedent);
-
     if ((*precedent) != NULL)
     {
         (*precedent) = (*precedent)->next;
