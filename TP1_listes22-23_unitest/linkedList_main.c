@@ -176,6 +176,10 @@ TEST(LL_create_list_fromFileName0) {
 // test pour la creation d'un polynome a partir d'un fichier
 TEST(LL_create_list_fromFileName) {
         cell_t *list;
+
+	LL_create_list_fromFileName(&list, "empty.txt");
+	CHECK(NULL == list);
+	
         LL_create_list_fromFileName(&list, "test.txt");
         REQUIRE (NULL != list);
         CHECK( list->val.coef == 5.413);
@@ -184,24 +188,76 @@ TEST(LL_create_list_fromFileName) {
         CHECK( list->next->val.degree == 3);
         CHECK( list->next->next->val.coef == 8.500);
         CHECK( list->next->next->val.degree == 8);
+	LL_free_list(&list);
 
+	LL_create_list_fromFileName(&list, "listScient.txt");
+        REQUIRE (NULL != list);
+	// LL_print_list(stdout, &list, &monom_save2file);
+	CHECK( list->val.coef == 0.0003);
+        CHECK( list->val.degree == 1);
+	CHECK( list->next->val.coef == 1200);
+        CHECK( list->next->val.degree == 2);
+	CHECK( list->next->next->val.coef == 0.000123);
+        CHECK( list->next->next->val.degree == 3);
+	CHECK( list->next->next->next->val.coef == 12300);
+        CHECK( list->next->next->next->val.degree == 4);
+	CHECK( list->next->next->next->next->val.coef == 3.21);
+        CHECK( list->next->next->next->next->val.degree == 5);
+	CHECK( list->next->next->next->next->next->val.coef == 6660000);
+        CHECK( list->next->next->next->next->next->val.degree == 6);
+	CHECK( list->next->next->next->next->next->next->val.coef == 0.0000066);
+        CHECK( list->next->next->next->next->next->next->val.degree == 7);
+	CHECK( list->next->next->next->next->next->next->next->val.coef == 0.42);
+        CHECK( list->next->next->next->next->next->next->next->val.degree == 8);
+	CHECK( list->next->next->next->next->next->next->next->next->val.coef == 0.00000000426);
+        CHECK( list->next->next->next->next->next->next->next->next->val.degree == 10);
+	CHECK( list->next->next->next->next->next->next->next->next->next->val.coef == 3300);
+        CHECK( list->next->next->next->next->next->next->next->next->next->val.degree == 12);
+	CHECK( list->next->next->next->next->next->next->next->next->next->next->val.coef == 11);
+        CHECK( list->next->next->next->next->next->next->next->next->next->next->val.degree == 42);
 	LL_free_list(&list);
 }
 
-/*
-TEST(LL_save_list_toFile) { // test pour l'ecriture d'un polynome sur un flux de sortie
+
+TEST(LL_print_list) { // test pour l'ecriture d'un polynome sur un flux de sortie
 	cell_t *list;
 
-	//TO DO
+	// cas d'une liste vide
+	LL_create_list_fromFileName(&list, "empty.txt");
+	char buffer[1024] = "";
+	FILE * file = fmemopen(buffer, 1024, "w");
+	REQUIRE ( NULL != file);
+	LL_print_list(file,&list, monom_save2file);
+	fclose(file);
+	CHECK(0 == strcmp(buffer,""));	
+	LL_free_list(&list);
+
+	//standart
+	LL_create_list_fromFileName(&list, "test.txt");
+	file = fmemopen(buffer, 1024, "w");
+	REQUIRE ( NULL != file);
+	LL_print_list(file,&list, monom_save2file);
+	fclose(file);
+	CHECK(0 == strcmp(buffer,"5.413 2\n6.012 3\n8.500 8\n"));	
+	LL_free_list(&list);
+
+	//grosse liste arrondies
+	LL_create_list_fromFileName(&list, "listScient.txt");
+	file = fmemopen(buffer, 1024, "w");
+	REQUIRE ( NULL != file);
+	LL_print_list(file,&list, monom_save2file);
+	fclose(file);
+	CHECK(0 == strcmp(buffer,"0.000 1\n1200.000 2\n0.000 3\n12300.000 4\n3.210 5\n6660000.000 6\n0.000 7\n0.420 8\n0.000 10\n3300.000 12\n11.000 42\n"));	
+	LL_free_list(&list);
 }
-*/
+
 TEST(LL_search_prev) { // test pour la fonction de recherche d'une valeur
 	cell_t *list;
 	cell_t ** cel;
 	  
         LL_create_list_fromFileName(&list, "test.txt");
         REQUIRE (NULL != list);
-	LL_print_list(stdout, &list, &monom_save2file);
+	// LL_print_list(stdout, &list, &monom_save2file);
 	cel = LL_search_prev(&list, (&list->next->next->val), &monom_degree_cmp);
 	REQUIRE(*cel != NULL);
 	CHECK(*cel == list->next->next);
@@ -229,29 +285,43 @@ TEST(LL_add_celln) { // test d'insertion de cellule - liste a n cellules
 
 TEST(LL_del_cell) { // test de la suppression d'un element
 	cell_t *list;
+	// creation de la liste
 	LL_create_list_fromFileName(&list, "test.txt");
         REQUIRE (NULL != list);
+	// test de la suppression cas generale
 	LL_del_cell(&(list->next));
 	CHECK( list->val.coef == 5.413);
         CHECK( list->val.degree == 2);
         CHECK( list->next->val.coef == 8.500);
         CHECK( list->next->val.degree == 8);
+	// test suppression 1er element
 	LL_del_cell(&(list));
 	CHECK( list->val.coef == 8.500);
         CHECK( list->val.degree == 8);
+	// test suppression de null
 	LL_del_cell(&(list->next));
+	// test de rendre la liste vide
 	LL_del_cell(&(list));
 	CHECK(list == NULL);
 	
 	LL_free_list(&list);
 }
-/*
+
 TEST(LL_free_list) { // test de la liberation de liste
 	cell_t *list;
 
-	//TO DO
-}
+	LL_create_list_fromFileName(&list, "test.txt");
+        REQUIRE (NULL != list);
 
+	LL_free_list(&list);
+	CHECK(list == NULL);
+	// free un null
+	LL_free_list(&list);
+	CHECK(list == NULL);
+	  
+	
+}
+/*
 TEST(LL_save_list_toFileName) { // BONUS - 3eme Seance
 	cell_t *list;
 
