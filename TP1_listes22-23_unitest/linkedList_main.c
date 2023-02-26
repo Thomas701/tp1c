@@ -219,19 +219,33 @@ TEST(LL_search_prev) { // test pour la fonction de recherche d'une valeur
 }
 /*
 TEST(LL_add_celln) { // test d'insertion de cellule - liste a n cellules
-	cell_t *list = NULL;
+        cell_t *list = NULL;
 
-	// TO DO
-	// utiliser LL_save_list_toFile pour comparer la valeur de la liste
-	// et LL_free_list
+        // TO DO
+        // utiliser LL_save_list_toFile pour comparer la valeur de la liste
+        // et LL_free_list
 }
+*/
 
 TEST(LL_del_cell) { // test de la suppression d'un element
 	cell_t *list;
-
-	//TO DO
+	LL_create_list_fromFileName(&list, "test.txt");
+        REQUIRE (NULL != list);
+	LL_del_cell(&(list->next));
+	CHECK( list->val.coef == 5.413);
+        CHECK( list->val.degree == 2);
+        CHECK( list->next->val.coef == 8.500);
+        CHECK( list->next->val.degree == 8);
+	LL_del_cell(&(list));
+	CHECK( list->val.coef == 8.500);
+        CHECK( list->val.degree == 8);
+	LL_del_cell(&(list->next));
+	LL_del_cell(&(list));
+	CHECK(list == NULL);
+	
+	LL_free_list(&list);
 }
-
+/*
 TEST(LL_free_list) { // test de la liberation de liste
 	cell_t *list;
 

@@ -18,6 +18,7 @@ void poly_derive(cell_t ** head)
         if (cellule->val.degree == 0)
         {
             cell_t ** p_cell_suppr = LL_search_prev(head, &(cellule->val), &monom_degree_cmp);
+	    printf("value : %lf %d %p\n", (*p_cell_suppr)->val.coef, (*p_cell_suppr)->val.degree, (*p_cell_suppr)->next);
             LL_del_cell(p_cell_suppr);
         }
         else
@@ -36,9 +37,48 @@ void poly_derive(cell_t ** head)
  */
 void poly_add(cell_t **head1, cell_t **head2)
 {
+  cell_t *cel;
+  cell_t *cour1;
+  cell_t *cour2;
+  int compare;
+  if(monom_degree_cmp(&((*head1)->val), &((*head2)->val)) > 0){
+    cel = *head1;
+    *head1 = *head2;
+    *head2 = cel;
+  }
 
+  cour1 = *head1;
+  cour2 = *head2;
+  *head2 = NULL;
 
-  
+  while(cour2 != NULL){
+    compare = monom_degree_cmp(&(cour1->val), &(cour2->val));
+    if(compare == 0){
+      cour1->val.coef += cour2->val.coef;
+      cel = cour2;
+      cour2 = cour2->next;
+      free(cel);
+    }else {
+      if(cour1->next == NULL || monom_degree_cmp(&(cour1->next->val), &(cour2->val)) > 0){
+	cel = cour2;
+	cour2 = cour2->next;
+	cel->next = cour1->next;
+	cour1->next = cel;
+	cour1 = cour1->next;
+      }else{
+	cour1 = cour1->next;
+      }
+    }
+  }
+  cour1 = *head1;
+  while (cour1->next != NULL) {
+    if(cour1->next->val.coef == 0){
+      cel = cour1->next;
+      cour1->next = cel->next;
+      free(cel);
+    }
+    cour1 = cour1->next;
+  }
 }
 /*
 void poly_add(cell_t ** head1, cell_t ** head2)
@@ -103,7 +143,6 @@ cell_t * poly_prod(cell_t * head1, cell_t * head2)
   while(cour1->next != NULL)cour1 = cour1->next;
   while(cour2->next != NULL)cour2 = cour2->next;
   maxdeg = cour1->val.degree+cour2->val.degree;
-  printf("max deg : %d\n", maxdeg);
 
   values = (float *)malloc((maxdeg+1)*sizeof(float));
   if(values){

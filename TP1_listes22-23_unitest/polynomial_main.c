@@ -68,7 +68,7 @@ TEST(Poly_derive) { // test sur la derivation d'un polynome
 	
 	
 	poly_derive(&list);
-	LL_print_list(stdout, &list, monom_save2file);
+	// LL_print_list(stdout, &list, monom_save2file);
 	CHECK (list == NULL);
 	
 	
@@ -98,18 +98,20 @@ TEST(Poly_addition) { // test sur l'addition de deux polymones
         CHECK(0 == strcmp(buffer, "10.826 2\n12.024 3\n17.000 8\n"));
 
 	LL_create_list_fromFileName(&poly2, "test2.txt");
-	LL_print_list(stdout, &poly2, &monom_save2file);
+
+	// printf("Liste 2 : \n");
+	// LL_print_list(stdout, &poly2, &monom_save2file);
 	poly_add(&poly, &poly2);
 	REQUIRE(poly != NULL);
 
 
         file = fmemopen(buffer, 1024, "w");
-        REQUIRE ( NULL != file);
+	REQUIRE ( NULL != file);
 
         LL_print_list(file, &poly, &monom_save2file);
         fclose(file);
-	printf("%s\n", buffer);
-        CHECK(0 == strcmp(buffer, "10.826 2\n12.024 3\n17.000 8\n"));
+	//printf("liste 1 : %s\n", buffer);
+        CHECK(0 == strcmp(buffer, "1.233 1\n10.826 2\n-110.988 3\n345.500 7\n17.000 8\n"));
 	
 	LL_free_list(&poly);
 	
@@ -140,6 +142,8 @@ TEST(Poly_produit) { // test sur le calcul du produit de deux polymones
 
 	
 	LL_free_list(&poly);
+	LL_free_list(&poly2);
+	LL_free_list(&poly3);
 }
 
 /*
