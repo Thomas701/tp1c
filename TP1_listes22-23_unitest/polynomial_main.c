@@ -57,7 +57,7 @@ TEST(Poly_derive) { // test sur la derivation d'un polynome
 	FILE* file;
 	
 	LL_init_list(&list);
-
+	printf("\nDerive of polynomial becoming null : \n");
 	file = fmemopen(buffer, 1024, "w");
 	REQUIRE ( NULL != file );
 	list = LL_create_cell(&v1);
@@ -80,6 +80,8 @@ TEST(Poly_addition) { // test sur l'addition de deux polymones
 	cell_t *poly;
 	cell_t *poly2;
 
+	printf("\nAdd two polynomial same coef: \n");
+	
 	LL_create_list_fromFileName(&poly, "test.txt");
 	LL_create_list_fromFileName(&poly2, "test.txt");
 
@@ -99,6 +101,8 @@ TEST(Poly_addition) { // test sur l'addition de deux polymones
 
 	LL_create_list_fromFileName(&poly2, "test2.txt");
 
+	printf("\nAdd two polynomial different coef: \n");
+	
 	// printf("Liste 2 : \n");
 	// LL_print_list(stdout, &poly2, &monom_save2file);
 	poly_add(&poly, &poly2);
@@ -113,6 +117,21 @@ TEST(Poly_addition) { // test sur l'addition de deux polymones
 	//printf("liste 1 : %s\n", buffer);
         CHECK(0 == strcmp(buffer, "1.233 1\n10.826 2\n-110.988 3\n345.500 7\n17.000 8\n"));
 	
+	LL_free_list(&poly);
+
+	printf("\nAdd two polynomial that lead to 0: \n");
+	
+	LL_create_list_fromFileName(&poly, "test.txt");
+	LL_create_list_fromFileName(&poly2, "testNeg.txt");
+
+	REQUIRE(poly != NULL && poly2 != NULL);
+	// LL_print_list(stdout, &poly, &monom_save2file);
+
+	poly_add(&poly, &poly2);
+
+
+        CHECK(poly == NULL);
+
 	LL_free_list(&poly);
 	
 }
@@ -146,13 +165,47 @@ TEST(Poly_produit) { // test sur le calcul du produit de deux polymones
 	LL_free_list(&poly3);
 }
 
-/*
-TEST(LL_save_list_toFileName) { // test pour l'ecriture d'un polynome dans un fichier
-	cell_t *list;
 
-	//TO DO
+TEST(LL_save_list_toFileName) { // test pour l'ecriture d'un polynome dans un
+				// fichier
+  cell_t *poly;
+  cell_t *poly2;
+  cell_t *poly3;
+  
+  LL_create_list_fromFileName(&poly, "test.txt");
+  LL_create_list_fromFileName(&poly2, "listScient.txt");
+  
+  REQUIRE(poly != NULL && poly2 != NULL);
+  // LL_print_list(stdout, &poly, &monom_save2file);
+  poly3 = poly_prod(poly, poly2);
+  REQUIRE(poly != NULL);
+
+  LL_save_list_toFileName(&poly3, "poly3.txt", &monom_save2file);
+
+  LL_free_list(&poly);
+  LL_free_list(&poly2);
+
+  LL_create_list_fromFileName(&poly, "poly3.txt");
+  
+  char buffer[1024] = "";
+  char buffer2[1024] = "";
+  FILE * file = fmemopen(buffer, 1024, "w");
+  REQUIRE ( NULL != file);
+  LL_print_list(file, &poly3, &monom_save2file);
+  fclose(file);
+  file = fmemopen(buffer2, 1024, "w");
+  REQUIRE ( NULL != file);
+  LL_print_list(file, &poly, &monom_save2file);
+  fclose(file);
+  // printf("%s\n", buffer);
+  CHECK(0 == strcmp(buffer, buffer2));
+
+	
+  LL_free_list(&poly);
+  LL_free_list(&poly3);  
+  
 }
-*/
+
 
 END_TEST_GROUP(polynomial)
 

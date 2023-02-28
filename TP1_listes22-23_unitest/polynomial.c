@@ -7,7 +7,7 @@
 #include "valCell.h"
 
 /**
- * @brief compute 'in place' the derive of a polynomial 
+ * @brief compute 'in place' the derive of a polynomial
  * @param [in, out] xxx address of a polynomial's head pointer
  */
 void poly_derive(cell_t ** head)
@@ -18,15 +18,16 @@ void poly_derive(cell_t ** head)
         if (cellule->val.degree == 0)
         {
             cell_t ** p_cell_suppr = LL_search_prev(head, &(cellule->val), &monom_degree_cmp);
-	    printf("value : %lf %d %p\n", (*p_cell_suppr)->val.coef, (*p_cell_suppr)->val.degree, (*p_cell_suppr)->next);
+	    cellule = cellule->next;
             LL_del_cell(p_cell_suppr);
         }
         else
         {
             cellule->val.coef = (cellule->val.coef) * (cellule->val.degree);
             cellule->val.degree = (cellule->val.degree) - 1;
+	    cellule = cellule->next;
         }
-	cellule = cellule->next;
+	
     }
 }
 
@@ -70,15 +71,29 @@ void poly_add(cell_t **head1, cell_t **head2)
       }
     }
   }
-  cour1 = *head1;
-  while (cour1->next != NULL) {
+
+  cell_t ** sup = head1;
+  while((*sup) != NULL){
+    if((*sup)->val.coef == 0){
+      
+    }
+  }
+
+  /*  cour1 = *head1;
+  while (cour1 != NULL && cour1->val.coef == 0){
+    *head1 = cour1->next;
+    free(cour1);
+    cour1 = *head1;
+  }
+  while (cour1 != NULL && cour1->next != NULL) {
     if(cour1->next->val.coef == 0){
       cel = cour1->next;
       cour1->next = cel->next;
       free(cel);
+    }else{
+      cour1 = cour1->next;
     }
-    cour1 = cour1->next;
-  }
+    }*/
 }
 /*
 void poly_add(cell_t ** head1, cell_t ** head2)
