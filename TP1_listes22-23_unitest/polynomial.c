@@ -72,14 +72,7 @@ void poly_add(cell_t **head1, cell_t **head2)
     }
   }
 
-  cell_t ** sup = head1;
-  while((*sup) != NULL){
-    if((*sup)->val.coef == 0){
-      
-    }
-  }
-
-  /*  cour1 = *head1;
+  cour1 = *head1;
   while (cour1 != NULL && cour1->val.coef == 0){
     *head1 = cour1->next;
     free(cour1);
@@ -93,7 +86,7 @@ void poly_add(cell_t **head1, cell_t **head2)
     }else{
       cour1 = cour1->next;
     }
-    }*/
+  }
 }
 /*
 void poly_add(cell_t ** head1, cell_t ** head2)
