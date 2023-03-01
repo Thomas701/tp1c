@@ -26,6 +26,8 @@ TEST(monom_degree_cmp) {
 TEST(monom_save2file) {
         monom_t v = {5., 7};
 
+	printf("\nPrint of a polynome : \n");
+	
         // creation du flux de texte => buffer
         char buffer[1024] = "";
         FILE * file = fmemopen(buffer, 1024, "w");
@@ -165,7 +167,7 @@ TEST(LL_add_cell3) {
 TEST(LL_create_list_fromFileName0) {
         cell_t *list;
 
-        printf("\nCreate a linked list from file name0: \n");
+        printf("\nCreate a linked list from file that does not exist : \n");
 
         LL_create_list_fromFileName(&list, "notExist.txt");
         CHECK( NULL == list );
@@ -177,9 +179,11 @@ TEST(LL_create_list_fromFileName0) {
 TEST(LL_create_list_fromFileName) {
         cell_t *list;
 
+	printf("\nCreate an empty linked list from file : \n");
 	LL_create_list_fromFileName(&list, "empty.txt");
 	CHECK(NULL == list);
-	
+
+	printf("\nCreate a linked list from file : \n");
         LL_create_list_fromFileName(&list, "test.txt");
         REQUIRE (NULL != list);
         CHECK( list->val.coef == 5.413);
@@ -190,6 +194,7 @@ TEST(LL_create_list_fromFileName) {
         CHECK( list->next->next->val.degree == 8);
 	LL_free_list(&list);
 
+	printf("\nCreate a long linked list from file written in scientific way with negatives : \n");
 	LL_create_list_fromFileName(&list, "listScient.txt");
         REQUIRE (NULL != list);
 	// LL_print_list(stdout, &list, &monom_save2file);
@@ -211,7 +216,7 @@ TEST(LL_create_list_fromFileName) {
         CHECK( list->next->next->next->next->next->next->next->val.degree == 8);
 	CHECK( list->next->next->next->next->next->next->next->next->val.coef == 0.00000000426);
         CHECK( list->next->next->next->next->next->next->next->next->val.degree == 10);
-	CHECK( list->next->next->next->next->next->next->next->next->next->val.coef == 3300);
+	CHECK( list->next->next->next->next->next->next->next->next->next->val.coef == -3300);
         CHECK( list->next->next->next->next->next->next->next->next->next->val.degree == 12);
 	CHECK( list->next->next->next->next->next->next->next->next->next->next->val.coef == 11);
         CHECK( list->next->next->next->next->next->next->next->next->next->next->val.degree == 42);
@@ -222,7 +227,7 @@ TEST(LL_create_list_fromFileName) {
 TEST(LL_print_list) { // test pour l'ecriture d'un polynome sur un flux de sortie
 	cell_t *list;
 
-	// cas d'une liste vide
+	printf("\nPrint of an empty list : \n");
 	LL_create_list_fromFileName(&list, "empty.txt");
 	char buffer[1024] = "";
 	FILE * file = fmemopen(buffer, 1024, "w");
@@ -232,7 +237,8 @@ TEST(LL_print_list) { // test pour l'ecriture d'un polynome sur un flux de sorti
 	CHECK(0 == strcmp(buffer,""));	
 	LL_free_list(&list);
 
-	//standart
+	
+	printf("\nPrint of a normale list : \n");
 	LL_create_list_fromFileName(&list, "test.txt");
 	file = fmemopen(buffer, 1024, "w");
 	REQUIRE ( NULL != file);
@@ -241,20 +247,21 @@ TEST(LL_print_list) { // test pour l'ecriture d'un polynome sur un flux de sorti
 	CHECK(0 == strcmp(buffer,"5.413 2\n6.012 3\n8.500 8\n"));	
 	LL_free_list(&list);
 
-	//grosse liste arrondies
+	printf("\nPrint of a long list with little, big and negatives numbers : \n");
 	LL_create_list_fromFileName(&list, "listScient.txt");
 	file = fmemopen(buffer, 1024, "w");
 	REQUIRE ( NULL != file);
 	LL_print_list(file,&list, monom_save2file);
 	fclose(file);
-	CHECK(0 == strcmp(buffer,"0.000 1\n1200.000 2\n0.000 3\n12300.000 4\n3.210 5\n6660000.000 6\n0.000 7\n0.420 8\n0.000 10\n3300.000 12\n11.000 42\n"));	
+	CHECK(0 == strcmp(buffer,"0.000 1\n1200.000 2\n0.000 3\n12300.000 4\n3.210 5\n6660000.000 6\n0.000 7\n0.420 8\n0.000 10\n-3300.000 12\n11.000 42\n"));	
 	LL_free_list(&list);
 }
 
 TEST(LL_search_prev) { // test pour la fonction de recherche d'une valeur
 	cell_t *list;
 	cell_t ** cel;
-	  
+
+	printf("\nSearch of a standard cell : \n");
         LL_create_list_fromFileName(&list, "test.txt");
         REQUIRE (NULL != list);
 	// LL_print_list(stdout, &list, &monom_save2file);
@@ -262,10 +269,12 @@ TEST(LL_search_prev) { // test pour la fonction de recherche d'une valeur
 	REQUIRE(*cel != NULL);
 	CHECK(*cel == list->next->next);
 
+	printf("\nSearch of a non-existing cell : \n");	
 	monom_t tmp = {4, 100};
 	cel = LL_search_prev(&list, (&tmp), &monom_degree_cmp);
 	REQUIRE(*cel == NULL);
 
+	printf("\nSearch of the first cell : \n");	
 	cel = LL_search_prev(&list, (&list->val), &monom_degree_cmp);
 	REQUIRE(*cel != NULL);
 	CHECK(*cel == list);
@@ -273,34 +282,29 @@ TEST(LL_search_prev) { // test pour la fonction de recherche d'une valeur
 	LL_free_list(&list);
 	
 }
-/*
-TEST(LL_add_celln) { // test d'insertion de cellule - liste a n cellules
-        cell_t *list = NULL;
 
-        // TO DO
-        // utiliser LL_save_list_toFile pour comparer la valeur de la liste
-        // et LL_free_list
-}
-*/
 
 TEST(LL_del_cell) { // test de la suppression d'un element
 	cell_t *list;
-	// creation de la liste
+
+        printf("\nDelete a standard cell : \n");
 	LL_create_list_fromFileName(&list, "test.txt");
         REQUIRE (NULL != list);
-	// test de la suppression cas generale
 	LL_del_cell(&(list->next));
 	CHECK( list->val.coef == 5.413);
         CHECK( list->val.degree == 2);
         CHECK( list->next->val.coef == 8.500);
         CHECK( list->next->val.degree == 8);
-	// test suppression 1er element
+	
+        printf("\nDelete the first cell : \n");
 	LL_del_cell(&(list));
 	CHECK( list->val.coef == 8.500);
         CHECK( list->val.degree == 8);
-	// test suppression de null
+
+	printf("\nDelete not existing cell : \n");
 	LL_del_cell(&(list->next));
-	// test de rendre la liste vide
+
+        printf("\nDelete the only cell of a list : \n");
 	LL_del_cell(&(list));
 	CHECK(list == NULL);
 	
@@ -310,24 +314,48 @@ TEST(LL_del_cell) { // test de la suppression d'un element
 TEST(LL_free_list) { // test de la liberation de liste
 	cell_t *list;
 
+	printf("\nCreate and free a list : \n");
 	LL_create_list_fromFileName(&list, "test.txt");
         REQUIRE (NULL != list);
-
 	LL_free_list(&list);
 	CHECK(list == NULL);
-	// free un null
+
+	printf("\nfree an empty list : \n");
 	LL_free_list(&list);
 	CHECK(list == NULL);
 	  
 	
 }
-/*
-TEST(LL_save_list_toFileName) { // BONUS - 3eme Seance
-	cell_t *list;
 
-	//TO DO
+TEST(LL_save_list_toFileName) { // BONUS - 3eme Seance
+  cell_t *list;
+  cell_t *list2;
+
+  printf("\nCreate and write a list in file \"testingFonc.txt\" : \n");
+  LL_create_list_fromFileName(&list, "listScient.txt");
+  REQUIRE(list != NULL);
+  // LL_print_list(stdout, &poly, &monom_save2file);
+  LL_save_list_toFileName(&list, "testingFonc.txt", &monom_save2file);
+
+  printf("\nReading the file \"testingFonc.txt\" and compare to the original : \n");
+  LL_create_list_fromFileName(&list2, "testingFonc.txt");
+  char buffer[1024] = "";
+  char buffer2[1024] = "";
+  FILE * file = fmemopen(buffer, 1024, "w");
+  REQUIRE ( NULL != file);
+  LL_print_list(file, &list, &monom_save2file);
+  fclose(file);
+  file = fmemopen(buffer2, 1024, "w");
+  REQUIRE ( NULL != file);
+  LL_print_list(file, &list2, &monom_save2file);
+  fclose(file);
+  // printf("%s\n", buffer);
+  CHECK(0 == strcmp(buffer, buffer2));
+  
+  LL_free_list(&list);
+  LL_free_list(&list2);  
 }
-*/
+
 
 END_TEST_GROUP(linkedList)
 
