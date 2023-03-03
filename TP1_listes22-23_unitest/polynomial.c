@@ -47,22 +47,16 @@ void poly_add(cell_t **head1, cell_t **head2)
       (*cour1)->val.coef += cour2->val.coef;
       cour2 = cour2->next;
       free(cel);
+      if((*cour1)->val.coef == 0){
+	cel = (*cour1);
+	(*cour1) = (*cour1)->next;
+	free(cel);
+      }
     }else if(compare > 0){
       cour2 = cour2->next;
       cel->next = (*cour1);
       (*cour1) = cel;
       cour1 = &(*cour1)->next;
-    }else{
-      cour1 = &(*cour1)->next;
-    }
-  }
-
-  cour1 = head1;
-  while((*cour1) != NULL){
-    if((*cour1)->val.coef == 0){
-      cell_t * tmp = *cour1;
-      *cour1 = (*cour1)->next;
-      free(tmp);
     }else{
       cour1 = &(*cour1)->next;
     }
