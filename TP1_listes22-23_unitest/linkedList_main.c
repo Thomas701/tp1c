@@ -46,7 +46,6 @@ TEST(LL_init_list) {
 
         printf("\nInitialization of the linked list : \n");
         LL_init_list(&list);
-
         REQUIRE ( list == NULL );
 }
 
@@ -171,8 +170,6 @@ TEST(LL_create_list_fromFileName0) {
 
         LL_create_list_fromFileName(&list, "notExist.txt");
         CHECK( NULL == list );
-
-
 }
 
 // test pour la creation d'un polynome a partir d'un fichier
@@ -227,6 +224,7 @@ TEST(LL_create_list_fromFileName) {
 TEST(LL_print_list) { // test pour l'ecriture d'un polynome sur un flux de sortie
 	cell_t *list;
 
+        // Test de la fonction à partir d'une liste vide
 	printf("\nPrint of an empty list : \n");
 	LL_create_list_fromFileName(&list, "empty.txt");
 	char buffer[1024] = "";
@@ -237,7 +235,7 @@ TEST(LL_print_list) { // test pour l'ecriture d'un polynome sur un flux de sorti
 	CHECK(0 == strcmp(buffer,""));	
 	LL_free_list(&list);
 
-	
+	// Test d'une liste "normale"
 	printf("\nPrint of a normale list : \n");
 	LL_create_list_fromFileName(&list, "test.txt");
 	file = fmemopen(buffer, 1024, "w");
@@ -247,6 +245,7 @@ TEST(LL_print_list) { // test pour l'ecriture d'un polynome sur un flux de sorti
 	CHECK(0 == strcmp(buffer,"5.413 2\n6.012 3\n8.500 8\n"));	
 	LL_free_list(&list);
 
+        // Test d'une longue liste avec des nombres petits, grands, et négatifs
 	printf("\nPrint of a long list with little, big and negatives numbers : \n");
 	LL_create_list_fromFileName(&list, "listScient.txt");
 	file = fmemopen(buffer, 1024, "w");
