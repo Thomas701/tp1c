@@ -77,11 +77,11 @@ TEST(LL_add_cell1) {
         cell_t *new = NULL;
         monom_t m1 = {3.45, 17};
 
-        printf("\nAdd a cell to a linked list : \n");
+        printf("\nAdd a cell to an empty linked list : \n");
 
         new = LL_create_cell(&m1);
         REQUIRE ( new != NULL );
-
+	CHECK (list ==   NULL);
         LL_add_cell(&list, new);
         CHECK( list == new );
 
@@ -273,6 +273,12 @@ TEST(LL_search_prev) { // test pour la fonction de recherche d'une valeur
 	monom_t tmp = {4, 100};
 	cel = LL_search_prev(&list, (&tmp), &monom_degree_cmp);
 	REQUIRE(*cel == NULL);
+
+	printf("\nSearch of a non-existing cell that would be in the middle  of the list: \n");	
+	monom_t tmp2 = {4, 4};
+	cel = LL_search_prev(&list, (&tmp2), &monom_degree_cmp);
+	REQUIRE(*cel != NULL);
+	CHECK(*cel == list->next->next);
 
 	printf("\nSearch of the first cell : \n");	
 	cel = LL_search_prev(&list, (&list->val), &monom_degree_cmp);
