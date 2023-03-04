@@ -16,6 +16,7 @@ void poly_derive(cell_t ** head)
 	{
 	  cell_t * sup = (*cour);
 	  (*cour) = (*cour)->next;
+	  free(sup);
 	}
       else
 	{
