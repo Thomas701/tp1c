@@ -24,10 +24,12 @@ void LL_init_list(cell_t ** adrHeadPt)
  */
 cell_t * LL_create_cell(monom_t * mon)
 {
-    cell_t * cellule = (cell_t *) malloc(sizeof(cell_t));
-    cellule->val.coef = mon->coef;
-    cellule->val.degree = mon->degree;
-    cellule->next = NULL;
+    cell_t * cellule = (cell_t *) malloc(sizeof(cell_t)); //création nouvelle cellule
+    if (!cellule)
+      EXIT_FAILURE;
+    cellule->val.coef = mon->coef; //affectation du coef
+    cellule->val.degree = mon->degree; //affectation du degré
+    cellule->next = NULL; //effectation du next
     return cellule;
 }
 
@@ -60,27 +62,29 @@ void LL_create_list_fromFileName(cell_t ** head, char * name)
     int degrees;
     //#Initialisation
     f = fopen(name, "r");
-    char *file_contents = malloc(sizeof(char)*60);
+    char *file_contents = malloc(sizeof(char)*60); // allocation dynamique d'un tableau de caractère qui stocke les lignes du fichier une par une
+    if (file_contents == NULL)
+      EXIT_FAILURE;
     //#code
     if (f == NULL){ //si le fichier n'existe pas, on ne fait rien
       printf("ERREUR : Fichier %s inexistant!!!\n", name);
     }else{
       while (fscanf(f, "%[^\n] ", file_contents) != EOF) 
 	{
-	  monom_t mon;// = (monom_t*) malloc(sizeof(monom_t));
-	  sscanf(file_contents,"%lf %d",&value, &degrees);
-	  mon.coef = value; //printf("monCoef: %.3f, monDegree: %d\n", value, degrees);
-	  mon.degree = degrees;
-	  if ((*head) == NULL)
+	  monom_t mon;
+	  sscanf(file_contents,"%lf %d",&value, &degrees);  // on stocke la ligne en question du fichier
+	  mon.coef = value; //affectation du coefficient du monome
+	  mon.degree = degrees; //affectation du degré du monome
+	  if ((*head) == NULL) // si la tête de la liste est nulle
 	    {
-	      cellule = LL_create_cell(&mon);
-	      (*head) = cellule;
+	      cellule = LL_create_cell(&mon); //creation d'une nouvelle cellule
+	      (*head) = cellule; // la tête de la liste pointe sur la cellule préalablement créé
 	    }
-	  else
+	  else // si la tête de la liste n'est pas nulle
 	    {
-	      cell_t * cellule2 = LL_create_cell(&mon);
-	      cellule->next = cellule2;
-	      cellule = cellule2;
+	      cell_t * cellule2 = LL_create_cell(&mon); //creation de la nouvelle cellule
+	      cellule->next = cellule2; // le suivant de la cellule courante pointe vers cellule2
+	      cellule = cellule2; // la cellule courante devient la cellule suivante
 	    }
 	}
       fclose(f);
@@ -97,7 +101,7 @@ void LL_create_list_fromFileName(cell_t ** head, char * name)
 void LL_print_list(FILE * f, cell_t ** head, void (*pf) (FILE *, monom_t *))
 {
   cell_t * cellule = *head;
-  while (cellule != NULL)
+  while (cellule != NULL) // tant que le parcour de la liste n'est pas terminé
     {
       (*pf)(f, &(cellule->val));
       cellule = cellule->next;
@@ -113,8 +117,10 @@ void LL_print_list(FILE * f, cell_t ** head, void (*pf) (FILE *, monom_t *))
 void LL_save_list_toFileName(cell_t ** head, char * name, void (*pf)(FILE * ,monom_t *))
 {
     FILE * f;
-    f = fopen(name, "w");
-    LL_print_list(f, head, pf);
+    f = fopen(name, "w"); //ouverture du fichier correspondant
+    if (f == NULL)
+      EXIT_FAILURE;
+    LL_print_list(f, head, pf); //utilisation de la fonction précédente
     fclose(f);
 }
 
@@ -129,7 +135,7 @@ void LL_save_list_toFileName(cell_t ** head, char * name, void (*pf)(FILE * ,mon
 cell_t ** LL_search_prev(cell_t ** head, monom_t * value, int (*pf) (monom_t *, monom_t *))
 {
     cell_t ** cellule = head;
-    while (*cellule != NULL && (*pf) (value, &((*cellule)->val)) > 0 )
+    while (*cellule != NULL && (*pf) (value, &((*cellule)->val)) > 0 ) //tant que le degré de la cellule passée en paramètre est supérieur au degré de la cellule courante/
     {
         cellule = &((*cellule)->next);
     }
@@ -161,8 +167,8 @@ void LL_free_list(cell_t ** head)
   cell_t * suivant = *head;
     while ((suivant) != NULL)
     {
-        suivant = (*head)->next;
-        free(*head);
-        (*head) = suivant;
+      suivant = (*head)->next; //passage à l'élément suivant
+      free(*head); // libération de l'élément actuel
+      (*head) = suivant; // modification de la tête de liste
     }
 }
