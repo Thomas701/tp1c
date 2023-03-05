@@ -9,21 +9,22 @@
  */
 void poly_derive(cell_t ** head)
 {
-  cell_t * cellule = (*head);
-    while (cellule != NULL)
+  cell_t ** cour = head;
+  while ((*cour) != NULL)
     {
-        if (cellule->val.degree == 0)
-        {
-            cell_t ** p_cell_suppr = LL_search_prev(head, &(cellule->val), &monom_degree_cmp);
-	    cellule = cellule->next;
-            LL_del_cell(p_cell_suppr);
-        }
-        else
-        {
-            cellule->val.coef = (cellule->val.coef) * (cellule->val.degree);
-            cellule->val.degree = (cellule->val.degree) - 1;
-	    cellule = cellule->next;
-        }
+      if((*cour)->val.degree == 0)
+	{
+	  cell_t * sup = (*cour);
+	  (*cour) = (*cour)->next;
+	  free(sup);
+	}
+      else
+	{
+	  (*cour)->val.coef = ((*cour)->val.coef) * ((*cour)->val.degree);
+	  (*cour)->val.degree = ((*cour)->val.degree) - 1;
+	  cour = &(*cour)->next;
+      }
+        
     }
 }
 
@@ -47,22 +48,16 @@ void poly_add(cell_t **head1, cell_t **head2)
       (*cour1)->val.coef += cour2->val.coef;
       cour2 = cour2->next;
       free(cel);
+      if((*cour1)->val.coef == 0){
+	cel = (*cour1);
+	(*cour1) = (*cour1)->next;
+	free(cel);
+      }
     }else if(compare > 0){
       cour2 = cour2->next;
       cel->next = (*cour1);
       (*cour1) = cel;
       cour1 = &(*cour1)->next;
-    }else{
-      cour1 = &(*cour1)->next;
-    }
-  }
-
-  cour1 = head1;
-  while((*cour1) != NULL){
-    if((*cour1)->val.coef == 0){
-      cell_t * tmp = *cour1;
-      *cour1 = (*cour1)->next;
-      free(tmp);
     }else{
       cour1 = &(*cour1)->next;
     }
